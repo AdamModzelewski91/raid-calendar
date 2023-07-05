@@ -1,0 +1,50 @@
+.container {
+
+  .basic_info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 10px 0;
+
+    input{
+      border-radius: 5px;
+      border-style: none;
+      border: 1px solid #bbb;
+      padding-left: 5px;
+    }
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 5px;
+  }
+
+  .btn {
+    display: block;
+    width: 100%;
+    cursor: pointer;
+    text-transform: uppercase;
+    border-radius: 5px;
+    border-style: none;
+    color: #fff;
+
+  }
+
+  .btn_remove {
+    background-color: rgb(131, 8, 8);
+
+    &:hover {
+      background-color: lighten($color: rgb(131, 8, 8), $amount: 15);
+    }
+  }
+
+  .btn_add {
+    background-color:#00517c;
+
+    &:hover {
+      background-color: lighten($color: #00517c, $amount: 15);
+    }
+  }
+
+
+}

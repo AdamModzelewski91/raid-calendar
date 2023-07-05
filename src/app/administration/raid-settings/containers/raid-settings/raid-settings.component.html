@@ -1,0 +1,1 @@
+<app-raid-form *ngFor="let raids of raids$ | async" [raid]="raids" (savedRaid)="postRaidSettings($event)"></app-raid-form>

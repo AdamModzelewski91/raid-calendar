@@ -1,0 +1,12 @@
+<div class="button">
+  <div class="btn">
+    <ng-container *ngFor="let iterate of iterates">
+      <input type="checkbox" name="iterate" [id]="index + '_' +  iterate" (change)="writeValue(iterate)">
+      <label [for]="index + '_' + iterate"> {{ iterate }} </label>
+    </ng-container>
+  </div>
+  <button (click)="selectAll(iterates)"
+    [ngClass]="{'active': iterates.length === selectedValues.length}"
+    >{{ iterates.length !== selectedValues.length ? 'Select all' : 'Deselect all' }}
+  </button>
+</div>

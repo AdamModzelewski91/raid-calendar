@@ -1,0 +1,25 @@
+<div class="container">
+  <h1>Create raid</h1>
+  <div class="btn-group">
+    <button class="btn btn_add" (click)="addRaid()">Add next raid</button>
+    <button class="btn btn_add" (click)="saveRaid()">Save raids</button>
+  </div>
+  <form [formGroup]="form" class="raid">
+    <div formArrayName="raids">
+      <ng-container *ngFor="let raid of raids().controls; index as i" [formGroupName]="i">
+        <div class="basic_info">
+          <input type="text" formControlName="raidName" placeholder="Enter raid name">
+          <input type="text" formControlName="size" placeholder="Raid size">
+          <input type="text" formControlName="difficult" placeholder="Difficult">
+        </div>
+        <div formGroupName="raidingDays">
+          <p>Select raiding days:</p>
+          <app-raiding-time formControlName="days" selectTime="days" [index]="i"></app-raiding-time>
+          <p>Select raiding hours:</p>
+          <app-raiding-time formControlName="hours" selectTime="hours" [index]="i"></app-raiding-time>
+        </div>
+        <button class="btn btn_remove" (click)="removeRaid(i)">Remove Raid</button>
+      </ng-container>
+    </div>
+  </form>
+</div>

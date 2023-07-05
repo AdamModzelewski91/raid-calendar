@@ -1,0 +1,41 @@
+.nav {
+  background-color: #00517c;
+  padding: 0 5px 1px;
+  min-width: 250px;
+
+  &__main_menu {
+    text-align: left;
+    width: 100%;
+    padding: 5px 10px;
+    background-color: #00517c;
+    color: white;
+    cursor: pointer;
+  }
+
+  &__link_submenu {
+    margin-bottom: 5px;
+
+    a {
+      display: block;
+      color: white;
+      background-color: #009df1;
+      padding: 5px 10px;
+
+      &.active {
+        background-color: #0072af;
+      }
+
+      &:hover {
+        background-color: #0275b3;
+      }
+
+      &:checked {
+        background-color: blue;
+      }
+    }
+  }
+}
+
+button {
+  border-style: none;
+}

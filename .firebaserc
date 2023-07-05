@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "guild-raid-app"
+  },
+  "targets": {
+    "guild-raid-app": {
+      "hosting": {
+        "guild-raiding-app": [
+          "guild-raid-app"
+        ]
+      }
+    }
+  }
+}
