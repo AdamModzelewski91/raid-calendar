@@ -5,12 +5,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavComponent } from './main/containers/nav/nav.component';
 import { AdministrationModule } from './administration/administration.module';
-import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { FirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 import { provideAuth,getAuth } from '@angular/fire/auth';
-import { provideDatabase,getDatabase } from '@angular/fire/database';
 
-
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { AuthModule } from './auth/auth.module';
+import { AuthGuard } from './auth/guard/auth.guard';
 
 const routes: Routes = [
   { path: 'administration', component: AdministrationModule }
@@ -24,12 +25,13 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     AdministrationModule,
+    AuthModule,
     RouterModule.forRoot(routes),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
+    FirestoreModule,
     provideAuth(() => getAuth()),
-    provideDatabase(() => getDatabase()),
   ],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

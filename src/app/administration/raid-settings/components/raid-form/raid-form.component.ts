@@ -19,7 +19,7 @@ export interface RaidSettings {
   styleUrls: ['./raid-form.component.scss']
 })
 export class RaidFormComponent implements OnInit {
-  @Output() savedRaid = new EventEmitter<RaidSettings[]>();
+  @Output() savedRaid = new EventEmitter<any>();
 
   @Input() raid!: any;
 
@@ -30,6 +30,7 @@ export class RaidFormComponent implements OnInit {
   constructor(private fb: FormBuilder){}
 
   ngOnInit(): void {
+    console.log(this.raid)
     if (!this.raid?.raids?.length) {
       this.addRaid();
     } else {
@@ -62,8 +63,9 @@ export class RaidFormComponent implements OnInit {
   }
 
   saveRaid() {
-    const { raids } = this.form.getRawValue()
-    this.savedRaid.emit(raids)
+    const { raids } = this.form.getRawValue();
+    console.log(raids)
+    this.savedRaid.emit({raids: raids})
   }
 
 

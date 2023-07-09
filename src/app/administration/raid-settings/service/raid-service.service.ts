@@ -1,16 +1,8 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import { map, mergeMap, Observable, of, tap } from 'rxjs';
+import {  Observable, map, tap } from 'rxjs';
 import { RaidSettings } from '../components/raid-form/raid-form.component';
-import { environment } from 'src/environments/environment';
-import { Database, ref, onValue } from "@angular/fire/database";
-import { getAuth } from "@angular/fire/auth";
-
-
-
-
-
-
+import { Firestore, addDoc, updateDoc, collection, collectionData, documentId, doc, collectionGroup, where, query, setDoc } from '@angular/fire/firestore';
+import { Auth } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -19,22 +11,25 @@ export class RaidSettingsService {
 
   raids$: Observable<any> = this.getRaidSettings();
 
-  constructor(private db: Database) { }
 
-  getRaidSettings(): any {
+  constructor(private fs: Firestore, private auth: Auth) { }
 
+  getRaidSettings(): Observable<any> {
 
-
-    const data = ref(this.db, 'administration')
-    return onValue(data, (snapshot) => {
-        return snapshot.val();
-
-    }, {
-      onlyOnce: true
-    })
+    return collectionData(
+      query(
+        collection(this.fs, 'raid-settings'), 
+        where(documentId(), "==", 'test'),
+      )
+    ).pipe(map(d => d[0]));
   }
 
-  postRaidSettings(raid: RaidSettings[]) {
-    console.log(raid)
+  updateRaidSettings(raid: any): void {
+    updateDoc(doc(this.fs, 'raid-settings', `${this.auth.currentUser?.uid}`), raid)
+  }
+
+  postRaidSettings(raid: any) {
+    setDoc(doc(this.fs, 'raid-settings', `${this.auth.currentUser?.uid}`), raid)
   }
 }
+
