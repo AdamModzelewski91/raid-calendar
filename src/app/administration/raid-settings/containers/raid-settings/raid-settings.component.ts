@@ -16,8 +16,4 @@ export class RaidSettingsComponent {
   postRaidSettings(raid: RaidSettings[]) {
     this.raidSettings.postRaidSettings(raid);
   }
-
-  updateRaidSettings(raid: RaidSettings[]) {
-    this.raidSettings.updateRaidSettings(raid);
-  }
 }

@@ -8,10 +8,44 @@ import { Component } from '@angular/core';
 export class NavComponent {
   activeLinks= [
     {
+      name: "Dashboard",
+      visible: true,
+      path: "dashboard",
+      expanded: false,
+      active: true,
+    },
+    {
+      name: "Progress",
+      visible: true,
+      path: "progress",
+      expanded: false,
+      active: false,
+      submenus: [
+        {
+          name: 'Individual',
+          path: 'individual',
+          visible: true,
+        },
+        {
+          name: 'Global',
+          path: 'global',
+          visible: true,
+        },
+      ]
+    },
+    {
+      name: "Raids",
+      visible: true,
+      path: "raids",
+      expanded: false,
+      active: true,
+    },
+    {
       name: "Administration",
       visible: true,
       path: "administration",
       expanded: true,
+      active: false,
       submenus: [
         {
           name: 'Raid settings',

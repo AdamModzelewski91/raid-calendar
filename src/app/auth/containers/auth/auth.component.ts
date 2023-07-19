@@ -10,8 +10,8 @@ export class AuthComponent implements OnInit {
 
   constructor(private authService: AuthService) {}
   ngOnInit(): void {
-    this.authService.login();
-    // this.authService.logout();
+
+
   }
-  
+
 }

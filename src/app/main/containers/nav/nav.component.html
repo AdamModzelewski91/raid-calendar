@@ -1,6 +1,11 @@
 <ul *ngFor="let link of activeLinks" class="nav">
   <div *ngIf="link.visible" class="nav__link">
-    <button routerLink="/{{ link.path }}" class="nav__main_menu" (click)="link.expanded = !link.expanded">{{ link.name }}</button>
+    <ng-container *ngIf="link.active else noActive">
+      <button routerLink="/{{ link.path }}" class="nav__main_menu" (click)="link.expanded = !link.expanded">{{ link.name }}</button>
+    </ng-container>
+    <ng-template #noActive>
+      <button class="nav__main_menu" (click)="link.expanded = !link.expanded">{{ link.name }}</button>
+    </ng-template>
     <div *ngFor="let submenu of link.submenus" [ngStyle]="{'display': !link.expanded ? 'none' : ''}">
         <li *ngIf="submenu.visible" class="nav__link_submenu">
           <a routerLink="/{{ link.path }}/{{ submenu.path }}" routerLinkActive="active" class="nav__link_submenu_link">

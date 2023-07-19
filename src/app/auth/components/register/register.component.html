@@ -1,0 +1,18 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <input type="text" placeholder="Enter your nick" formControlName="nick">
+  <input type="email" placeholder="Enter your email" formControlName="email">
+  <input [type]="showPassword ? 'text' : 'password'" placeholder="Enter your password" formControlName="password">
+  <label>Show password
+    <input type="checkbox" (change)="showPassword = !showPassword" [value]="showPassword">
+  </label>
+  <div>
+    <label >Create Guild
+      <input type="radio" name="guildMaster" [value]="true" formControlName="guildMaster">
+    </label>
+    <label>Join Guild
+      <input type="radio" name="guildMaster" [value]="false" formControlName="guildMaster">
+    </label>
+  </div>
+  <input type="text" placeholder="Guild name" formControlName="guildName" >
+  <button type="submit" [disabled]="!form.valid">Register</button>
+</form>

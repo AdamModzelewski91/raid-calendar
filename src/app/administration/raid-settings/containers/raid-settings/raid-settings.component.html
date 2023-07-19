@@ -1,5 +1,3 @@
 <pre>{{raids$ | async | json}}</pre>
-<app-raid-form *ngIf="raids$ | async as raids; else cleanForm" [raid]="raids" (savedRaid)="updateRaidSettings($event)"></app-raid-form>
-<ng-template #cleanForm>
-  <app-raid-form (savedRaid)="postRaidSettings($event)"></app-raid-form>
-</ng-template>
+<app-raid-form *ngIf="raids$ | async as raids" [raid]="raids" (savedRaid)="postRaidSettings($event)"></app-raid-form>
+
