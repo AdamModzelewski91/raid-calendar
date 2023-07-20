@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { NavComponent } from './main/containers/nav/nav.component';
 import { AdministrationModule } from './administration/administration.module';
 import { FirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
@@ -16,8 +15,9 @@ import { MainModule } from './main/main.module';
 import { CommonModule } from '@angular/common';
 import { RaidsModule } from './raids/raids.module';
 
+import { ProgressModule } from './progress/progress.module';
+
 const routes: Routes = [
-  { path: '', component: AuthModule},
   { path: '', component: AdministrationModule},
 ]
 
@@ -32,6 +32,7 @@ const routes: Routes = [
     AuthModule,
     MainModule,
     RaidsModule,
+    ProgressModule,
     RouterModule.forRoot(routes),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     FirestoreModule,

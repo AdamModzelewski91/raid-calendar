@@ -6,7 +6,6 @@ import { RaidSettingsComponent } from "./containers/raid-settings/raid-settings.
 import { RaidFormComponent } from './components/raid-form/raid-form.component';
 import { RaidingTimeComponent } from './components/raiding-time/raiding-time.component';
 import { RaidSettingsService } from "./service/raid-service.service";
-import { HttpClientModule } from "@angular/common/http";
 
 const routes: Routes = [
   { path: '', pathMatch: "full", component: RaidSettingsComponent },

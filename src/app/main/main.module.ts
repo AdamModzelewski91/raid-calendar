@@ -11,13 +11,13 @@ import { UserPanelComponent } from './containers/dashboard/user-panel/user-panel
 import { GuildPanelComponent } from './containers/dashboard/guild-panel/guild-panel.component';
 
 const routes: Routes = [
-  { path: 'add-character', component: AddCharacterComponent},
-  { path: 'character-list', component: CharacterListComponent},
+  { path: 'add-character', component: AddCharacterComponent, canActivate: [AuthGuard]},
+  { path: 'character-list', component: CharacterListComponent, canActivate: [AuthGuard]},
   { path: 'dashboard', component: DashboardComponent, children: [
     { path: 'user-panel', component: UserPanelComponent },
     { path: 'guild-panel', component: GuildPanelComponent },
     { path: '', pathMatch: 'full', redirectTo: 'user-panel'}
-  ]},
+  ], canActivate: [AuthGuard]},
 ]
 
 @NgModule({
