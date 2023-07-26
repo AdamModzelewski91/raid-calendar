@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Auth, signInWithEmailAndPassword, onAuthStateChanged, createUserWithEmailAndPassword } from '@angular/fire/auth';
-import { addDoc, collection, collectionData, doc, Firestore, setDoc, updateDoc, where, query, documentId } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, doc, Firestore, setDoc, updateDoc, where, query, getDoc } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { BehaviorSubject, map, mergeMap, take } from 'rxjs';
+import { BehaviorSubject, take } from 'rxjs';
 import { RegisterUser } from '../components/register/register.component';
 
 
@@ -12,10 +12,12 @@ import { RegisterUser } from '../components/register/register.component';
 export class AuthService {
   logged$ = new BehaviorSubject<boolean>(false);
 
+  guildId$ = new BehaviorSubject<string>('');
+
   constructor(
     private auth: Auth,
     private router: Router,
-    private db: Firestore
+    private fs: Firestore
   ) {}
 
   async login(email: string, password: string): Promise<any> {
@@ -31,19 +33,33 @@ export class AuthService {
 
     const createUser = await createUserWithEmailAndPassword(this.auth, email, password)
 
+    const uid = createUser.user.uid;
+
+
     if (guildMaster) {
-      this.createGuild(createUser.user.uid, guildName)
+      this.guildId$.next((await this.createGuild(uid, guildName)).id);
+      try {
+        this.addNewUser(uid, guildMaster, nick, this.guildId$.getValue());
+      } catch {
+        console.log('nope');
+      }
     } else {
-      this.joinGuild(createUser.user.uid, guildName);
+      this.joinGuild(guildName).pipe(
+        take(1),
+      ).subscribe((guild) => {
+        this.guildId$.next(guild[0]["documentId"]);
+        this.addNewUser(uid, guildMaster, nick, this.guildId$.getValue());
+        updateDoc(doc(this.fs, 'guilds', this.guildId$.getValue()), {
+          members: [...guild[0]["members"], uid],
+        });
+      });
     }
-    this.addNewUser(createUser.user.uid, guildMaster, nick)
-    this.login(email, password)
-    // this.router.navigateByUrl('/login');
+
+    this.login(email, password);
   }
 
-
   createGuild(uid: string, guildName: string) {
-    addDoc(collection(this.db, 'guilds'), {
+    return addDoc(collection(this.fs, 'guilds'), {
       createdAt: new Date(),
       guildMaster: uid,
       guildName: guildName,
@@ -51,28 +67,25 @@ export class AuthService {
     })
   }
 
-  joinGuild(uid: string, guildName: string) {
-    collectionData(
+  joinGuild(guildName: string) {
+    return collectionData(
       query(
-        collection(this.db, 'guilds'),
+        collection(this.fs, 'guilds'),
         where('guildName', '==', guildName)
       )
-    ).pipe(
-      take(1),
-    ).subscribe((guild) => {
-      console.log(guild)
-      updateDoc(doc(this.db, 'guilds', guild[0]["documentId"]), {
-        members: [...guild[0]["members"], uid],
-      })
+    )
+  }
 
+  addNewUser(uid: string, guildMaster: boolean, nick: string, guildId: string) {
+    setDoc(doc(this.fs, 'users', uid), {
+      guildMaster,
+      nick,
+      guildId,
     })
   }
 
-  addNewUser(uid: string, guildMaster: boolean, nick: string) {
-    setDoc(doc(this.db, 'users', uid), {
-      guildMaster,
-      nick,
-    })
+  async getGuild(uid: string) {
+    return await getDoc(doc(this.fs, 'users', uid))
   }
 
   isLogged() {
@@ -84,5 +97,6 @@ export class AuthService {
 
   logout() {
     this.auth.signOut();
+    this.router.navigateByUrl('/login');
   }
 }

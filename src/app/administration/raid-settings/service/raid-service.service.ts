@@ -15,7 +15,7 @@ export class RaidSettingsService {
   getRaidSettings(): Observable<any> {
     this.checkIfExists().then(res => {
       if(!res.valueOf()) {
-        this.postRaidSettings({});
+        this.postRaidSettings({raids: []});
       }
     });
 
@@ -23,7 +23,6 @@ export class RaidSettingsService {
       query(
         collection(this.fs, 'raid-settings'),
         where(documentId(), "==", this.auth.currentUser?.uid),
-
       )
     ).pipe(map(d => d[0]));
   }

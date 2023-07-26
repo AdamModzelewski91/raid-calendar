@@ -28,23 +28,34 @@
     border-style: none;
     color: #fff;
 
-  }
+    &.btn_remove {
+      background-color: rgb(131, 8, 8);
 
-  .btn_remove {
-    background-color: rgb(131, 8, 8);
-
-    &:hover {
-      background-color: lighten($color: rgb(131, 8, 8), $amount: 15);
+      &:hover {
+        background-color: lighten($color: rgb(131, 8, 8), $amount: 15);
+      }
     }
-  }
 
-  .btn_add {
-    background-color:#00517c;
+    &.btn_add {
+      background-color:#00517c;
 
-    &:hover {
-      background-color: lighten($color: #00517c, $amount: 15);
+      &:hover {
+        background-color: lighten($color: #00517c, $amount: 15);
+      }
     }
+
+    &:disabled{
+      background-color: #bdc4c8;
+      cursor: inherit;
+
+      &:hover {
+        background-color: #bdc4c8;
+      }
+    }
+
   }
+
+
 
 
 }

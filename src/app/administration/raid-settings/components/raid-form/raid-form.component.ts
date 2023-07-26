@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RaidSettingsService } from '../../service/raid-service.service';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+
 
 export interface RaidSettings {
   raidName: String ,
@@ -30,7 +30,14 @@ export class RaidFormComponent implements OnInit {
   constructor(private fb: FormBuilder){}
 
   ngOnInit(): void {
-    console.log(this.raid)
+    this.initializeRaidForm();
+  }
+
+  raids(): FormArray {
+    return this.form.get('raids') as FormArray;
+  }
+
+  initializeRaidForm() {
     if (!this.raid?.raids?.length) {
       this.addRaid();
     } else {
@@ -40,22 +47,30 @@ export class RaidFormComponent implements OnInit {
     }
   }
 
-  raids(): FormArray {
-    return this.form.get('raids') as FormArray;
-  }
-
   addRaid(raid?: RaidSettings): void {
     this.raids().push(
       this.fb.group({
-        raidName: [raid?.raidName || null, Validators.required],
-        size: [raid?.size || null, Validators.required],
-        difficult: [raid?.difficult || null, Validators.required],
+        raidName: [raid?.raidName || null, [Validators.required]],
+        size: [raid?.size || null, [Validators.required]],
+        difficult: [raid?.difficult || null, [Validators.required]],
         raidingDays: this.fb.group({
-          days: [raid?.raidingDays.days || [], Validators.required],
-          hours: [raid?.raidingDays.hours || [], Validators.required],
+          days: [raid?.raidingDays.days || []],
+          hours: [raid?.raidingDays.hours || []],
+        }, {
+          validators: this.checkSelectedRaidingDays()
         }),
       }),
-    )
+    );
+  }
+
+  checkSelectedRaidingDays(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const days = control.value.days;
+      const hours = control.value.hours;
+
+      const bothSelected = days.length > 0 && hours.length > 0;
+      return bothSelected ? null : {raidingDays: true};
+    }
   }
 
   removeRaid(index: number): void {
@@ -64,7 +79,6 @@ export class RaidFormComponent implements OnInit {
 
   saveRaid() {
     const { raids } = this.form.getRawValue();
-    console.log(raids)
     this.savedRaid.emit({raids: raids})
   }
 
