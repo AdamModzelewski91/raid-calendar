@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, children: [
     { path: 'user-panel', component: UserPanelComponent },
     { path: 'guild-panel', component: GuildPanelComponent },
-    { path: '', pathMatch: 'full', redirectTo: 'user-panel'}
+    { path: '', pathMatch: 'full', redirectTo: 'user-panel' },
   ], canActivate: [AuthGuard]},
 ]
 

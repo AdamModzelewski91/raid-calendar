@@ -1,0 +1,24 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <label>
+    New field:
+    <input type="text" formControlName="fieldName">
+  </label>
+  <div (change)="changeOption($event)">
+    <label>
+      <input type="radio" name="option" value="normal" checked>Standrard
+    </label>
+    <label>
+      <input type="radio" name="option" value="select">Selection
+    </label>
+  </div>
+  <label *ngIf="!form.get('fieldDescription')?.disabled">
+    Description:
+    <textarea type="text" formControlName="fieldDescription"></textarea>
+  </label>
+  <label *ngIf="!form.get('fieldDescription')?.disabled">
+    Description:
+    <textarea type="text" formControlName="fieldDescription"></textarea>
+  </label>
+  <button type="submit" [disabled]="!form.valid">+</button>
+</form>
+

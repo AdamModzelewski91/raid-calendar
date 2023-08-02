@@ -1,1 +1,10 @@
-<p>game-specification works!</p>
+<div>
+  <h1>Add Character builder</h1>
+  <pre>{{formList | json}}</pre>
+  <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let movie of formList" cdkDrag>{{movie}}</div>
+  </div>
+  <app-new-field (newField)="getNewField($event)"></app-new-field>
+  <button type="button" (click)="saveBuilder()">Save</button>
+</div>
+

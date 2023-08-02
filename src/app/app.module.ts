@@ -16,9 +16,11 @@ import { CommonModule } from '@angular/common';
 import { RaidsModule } from './raids/raids.module';
 
 import { ProgressModule } from './progress/progress.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const routes: Routes = [
-  { path: '', component: AdministrationModule},
+  { path: '**', redirectTo: 'dashboard'},
+
 ]
 
 @NgModule({
@@ -37,6 +39,7 @@ const routes: Routes = [
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     FirestoreModule,
     provideAuth(() => getAuth()),
+    BrowserAnimationsModule,
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]

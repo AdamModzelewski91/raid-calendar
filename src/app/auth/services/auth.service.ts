@@ -91,6 +91,7 @@ export class AuthService {
   isLogged() {
     onAuthStateChanged(this.auth, (user) => {
       this.logged$.next(!!user);
+      if (!this.router.getCurrentNavigation()) this.router.navigateByUrl('/dashboard')
     })
     return this.logged$;
   }

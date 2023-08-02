@@ -23,6 +23,7 @@ export class NavComponent {
         where(documentId(), "==", this.auth.currentUser?.uid),
       )
     ).pipe(take(1), map(d => d[0])).subscribe(val => {
+      console.log(val)
       if (val['guildMaster'])
         this.activeLinks = activeLinksMaster;
     });

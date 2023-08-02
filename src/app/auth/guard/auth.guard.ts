@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Auth, authState } from '@angular/fire/auth';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable, map, tap } from 'rxjs';
 
 @Injectable({
@@ -18,12 +18,12 @@ export class AuthGuard {
     return authState(this.auth).pipe(
       map(auth => {
         if (auth) {
-          return true
+          return true;
         }
-        this.router.navigate(['/login'])
-        return false
+        this.router.navigate(['/login']);
+        return false;
       })
     )
   }
-  
+
 }

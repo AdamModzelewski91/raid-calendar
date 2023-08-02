@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MemberListService } from '../../services/member-list.service';
 
 @Component({
   selector: 'app-member-list',
@@ -6,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./member-list.component.scss']
 })
 export class MemberListComponent {
+  memberList$ = this.memberListService.getMembersList();
+
+  constructor(private memberListService: MemberListService){}
+
 
 }
