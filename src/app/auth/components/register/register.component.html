@@ -5,12 +5,14 @@
   <label>Show password
     <input type="checkbox" (change)="showPassword = !showPassword" [value]="showPassword">
   </label>
-  <div>
-    <label >Create Guild
+  <div class="master-check">
+    <label>
       <input type="radio" name="guildMaster" [value]="true" formControlName="guildMaster">
+      <span>Create Guild</span>
     </label>
-    <label>Join Guild
+    <label>
       <input type="radio" name="guildMaster" [value]="false" formControlName="guildMaster">
+      <span>Join Guild</span>
     </label>
   </div>
   <input type="text" placeholder="Guild name" formControlName="guildName" >
