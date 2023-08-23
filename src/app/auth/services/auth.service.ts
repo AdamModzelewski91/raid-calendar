@@ -31,8 +31,17 @@ export class AuthService {
   async register(data: RegisterUser): Promise<void> {
     const { email, password, guildMaster, guildName, nick} = data;
 
-    const createUser = await createUserWithEmailAndPassword(this.auth, email, password)
+    await createUserWithEmailAndPassword(this.auth, email, password)
+      .then(userCredential => {
+        console.log(userCredential.user.uid)
+        this.login(email, password);
+      })
+      .catch(err => {
+        console.log(err.code, err.message)
+      })
 
+
+/*
     const uid = createUser.user.uid;
 
 
@@ -55,7 +64,7 @@ export class AuthService {
       });
     }
 
-    this.login(email, password);
+    this.login(email, password); */
   }
 
   createGuild(uid: string, guildName: string) {

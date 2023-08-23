@@ -1,8 +1,10 @@
 <app-nav *ngIf="isLogged$ | async"></app-nav>
 <router-outlet></router-outlet>
-<h1>Guild Raiding App</h1>
 <div *ngIf="!(isLogged$ | async)" class="my-profile">
-  <button routerLink="login" routerLinkActive="active">Login</button>
-  <button routerLink="register" routerLinkActive="active" >Register</button>
+  <h1>Guild Raiding App</h1>
+  <div class="buttons">
+    <button routerLink="login" routerLinkActive="active">Login</button>
+    <button routerLink="register" routerLinkActive="active" >Register</button>
+  </div>
 </div>
 <app-my-profile *ngIf="isLogged$ | async"></app-my-profile>

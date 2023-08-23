@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NonNullableFormBuilder, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormControlName, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 
 export interface RegisterUser {
@@ -18,8 +18,8 @@ export interface RegisterUser {
 export class RegisterComponent {
   form = this.fb.group({
     nick: ['', [Validators.required, Validators.minLength(3)]],
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(5)]],
+    email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
     guildMaster: true,
     guildName: ['', [Validators.required]]
   });
@@ -29,13 +29,23 @@ export class RegisterComponent {
   constructor(
     private fb: NonNullableFormBuilder,
     private authService: AuthService,
-  ) {}
+  ) {
+    console.log(this.registerFormControl.email)
+  }
 
+  get registerFormControl() {
+    return this.form.controls;
+  }
 
   onSubmit() {
-    if (this.form.valid) {
-      this.authService.register(this.form.getRawValue());
-    }
+    if (!this.form.valid) return;
+
+    this.authService.register(this.form.getRawValue()).then((user)=> {
+      console.log(user)
+    })
+    .catch(err => {
+      console.log(err.message)
+    });
   }
 
 }

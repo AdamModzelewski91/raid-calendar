@@ -6,7 +6,9 @@
   position: absolute;
   right: 0;
   display: flex;
-  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
   min-width: 150px;
   background-color: #00517c;
   padding: 5px;
@@ -15,6 +17,17 @@
   h2 {
     text-align: center;
     color: white;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 5px;
+    position: absolute;
+    right: 10px;
+  }
+
+  h1 {
+    color: #fff;
   }
 
   button {

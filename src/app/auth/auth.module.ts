@@ -5,6 +5,7 @@ import { AuthService } from "./services/auth.service";
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ReactiveFormsModule } from "@angular/forms";
+import { CommonModule } from "@angular/common";
 
 const routes: Routes = [
   { path: '', component: AuthComponent, children: [
@@ -17,6 +18,7 @@ const routes: Routes = [
   imports: [
     RouterModule.forChild(routes),
     ReactiveFormsModule,
+    CommonModule,
   ],
   providers: [
     AuthService,

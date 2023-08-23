@@ -13,6 +13,7 @@ form {
 
   .master-check {
     display: flex;
+    gap: 5px;
 
     label input[type='radio'] {
       display: none;
@@ -32,6 +33,22 @@ form {
     }
   }
 
+  label {
+    width: 100%;
+
+    span {
+      color: #fff;
+      display: block;
+      text-align: center;
+      background-color: lighten($color: #00517c, $amount: 10%);
+      cursor: pointer;
+    }
+  }
+
+  .show-pw {
+    text-align: center;
+    color: #fff;
+  }
 
   button {
     border-style: none;
@@ -44,5 +61,15 @@ form {
     &:hover {
       background-color: #0275b3;
     }
+
+    &:disabled {
+      background-color: #0275b3;
+      cursor: inherit;
+    }
   }
+
+  .text-danger {
+    color: red;
+    font-size: small;
+  };
 }

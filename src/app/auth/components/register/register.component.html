@@ -1,8 +1,21 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <input type="text" placeholder="Enter your nick" formControlName="nick">
-  <input type="email" placeholder="Enter your email" formControlName="email">
-  <input [type]="showPassword ? 'text' : 'password'" placeholder="Enter your password" formControlName="password">
-  <label>Show password
+  <input type="text" placeholder="Nick" formControlName="nick">
+  <ng-container *ngIf="(registerFormControl.nick.invalid && registerFormControl.nick.touched) || registerFormControl.nick.dirty">
+    <p class="text-danger" *ngIf="registerFormControl.nick.hasError('required')">Nick is taken! Try other.</p>
+    <p class="text-danger" *ngIf="registerFormControl.nick.touched && registerFormControl.nick.hasError('minlength')">Nick is to short! At leat 3 chars.</p>
+  </ng-container>
+  <input type="email" placeholder="Email" formControlName="email">
+  <ng-container *ngIf="(registerFormControl.email.invalid && registerFormControl.email.touched) || registerFormControl.email.dirty">
+    <p class="text-danger" *ngIf="registerFormControl.email.hasError('required')">Email required!</p>
+    <!-- <p class="text-danger" *ngIf="registerFormControl.email.touched">Email is already used! Try other.</p> -->
+    <p class="text-danger" *ngIf="registerFormControl.email.hasError('pattern') && registerFormControl.email.touched" >Wrong format!</p>
+  </ng-container>
+  <input [type]="showPassword ? 'text' : 'password'" placeholder="Password" formControlName="password">
+  <ng-container *ngIf="(registerFormControl.password.invalid && registerFormControl.password.touched) || registerFormControl.password.dirty">
+    <p class="text-danger" *ngIf="registerFormControl.password.hasError('required')">Type password!</p>
+    <p class="text-danger" *ngIf="registerFormControl.password.hasError('minlength')">Password is to short! At leat 6 chars.</p>
+  </ng-container>
+  <label class="show-pw">Show password
     <input type="checkbox" (change)="showPassword = !showPassword" [value]="showPassword">
   </label>
   <div class="master-check">
@@ -16,5 +29,8 @@
     </label>
   </div>
   <input type="text" placeholder="Guild name" formControlName="guildName" >
+  <ng-container *ngIf="(registerFormControl.guildName.invalid && registerFormControl.guildName.touched) || registerFormControl.guildName.dirty">
+    <p class="text-danger" *ngIf="registerFormControl.guildName.hasError('required')">Type guild name!</p>
+  </ng-container>
   <button type="submit" [disabled]="!form.valid">Register</button>
 </form>
