@@ -7,9 +7,9 @@
   <input type="email" placeholder="Email" formControlName="email">
   <ng-container *ngIf="(registerFormControl.email.invalid && registerFormControl.email.touched) || registerFormControl.email.dirty">
     <p class="text-danger" *ngIf="registerFormControl.email.hasError('required')">Email required!</p>
-    <!-- <p class="text-danger" *ngIf="registerFormControl.email.touched">Email is already used! Try other.</p> -->
     <p class="text-danger" *ngIf="registerFormControl.email.hasError('pattern') && registerFormControl.email.touched" >Wrong format!</p>
   </ng-container>
+  <p class="text-danger" *ngIf="emailAlreadyExist">Email is already used! Try other.</p>
   <input [type]="showPassword ? 'text' : 'password'" placeholder="Password" formControlName="password">
   <ng-container *ngIf="(registerFormControl.password.invalid && registerFormControl.password.touched) || registerFormControl.password.dirty">
     <p class="text-danger" *ngIf="registerFormControl.password.hasError('required')">Type password!</p>

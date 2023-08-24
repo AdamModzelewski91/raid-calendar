@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Auth, signInWithEmailAndPassword, onAuthStateChanged, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { addDoc, collection, collectionData, doc, Firestore, setDoc, updateDoc, where, query, getDoc } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { BehaviorSubject, take } from 'rxjs';
+import { BehaviorSubject, Observable, take } from 'rxjs';
 import { RegisterUser } from '../components/register/register.component';
 
 
@@ -12,7 +12,7 @@ import { RegisterUser } from '../components/register/register.component';
 export class AuthService {
   logged$ = new BehaviorSubject<boolean>(false);
 
-  guildId$ = new BehaviorSubject<string>('');
+  guildName$ = new BehaviorSubject<string>('');
 
   constructor(
     private auth: Auth,
@@ -28,46 +28,36 @@ export class AuthService {
     return userData
   }
 
-  async register(data: RegisterUser): Promise<void> {
+  async register(data: RegisterUser): Promise<any> {
     const { email, password, guildMaster, guildName, nick} = data;
 
-    await createUserWithEmailAndPassword(this.auth, email, password)
-      .then(userCredential => {
-        console.log(userCredential.user.uid)
-        this.login(email, password);
-      })
-      .catch(err => {
-        console.log(err.code, err.message)
-      })
+    const user = await createUserWithEmailAndPassword(this.auth, email, password);
+    const uid = user.user.uid;
 
-
-/*
-    const uid = createUser.user.uid;
-
+    let createdGuild;
 
     if (guildMaster) {
-      this.guildId$.next((await this.createGuild(uid, guildName)).id);
-      try {
-        this.addNewUser(uid, guildMaster, nick, this.guildId$.getValue());
-      } catch {
-        console.log('nope');
-      }
+      createdGuild = await this.createGuild(uid, guildName)
+      this.addNewUser(uid, guildMaster, nick, createdGuild.id);
     } else {
       this.joinGuild(guildName).pipe(
         take(1),
       ).subscribe((guild) => {
-        this.guildId$.next(guild[0]["documentId"]);
-        this.addNewUser(uid, guildMaster, nick, this.guildId$.getValue());
-        updateDoc(doc(this.fs, 'guilds', this.guildId$.getValue()), {
+        const guildID = guild[0]["documentId"];
+        this.addNewUser(uid, guildMaster, nick, guildID);
+        updateDoc(doc(this.fs, 'guilds', guildID), {
           members: [...guild[0]["members"], uid],
         });
       });
     }
+    
+    this.login(email, password).then(() => {
+      this.guildName$.next(guildName)
+    }); 
+    return user
+  }  
 
-    this.login(email, password); */
-  }
-
-  createGuild(uid: string, guildName: string) {
+  async createGuild(uid: string, guildName: string) : Promise<any> {
     return addDoc(collection(this.fs, 'guilds'), {
       createdAt: new Date(),
       guildMaster: uid,
@@ -76,7 +66,7 @@ export class AuthService {
     })
   }
 
-  joinGuild(guildName: string) {
+  joinGuild(guildName: string): Observable<any> {
     return collectionData(
       query(
         collection(this.fs, 'guilds'),
@@ -85,24 +75,30 @@ export class AuthService {
     )
   }
 
-  addNewUser(uid: string, guildMaster: boolean, nick: string, guildId: string) {
-    setDoc(doc(this.fs, 'users', uid), {
+  addNewUser(uid: string, guildMaster: boolean, nick: string, guildId: string): Promise<any> {
+    return setDoc(doc(this.fs, 'users', uid), {
       guildMaster,
       nick,
       guildId,
     })
   }
 
-  async getGuild(uid: string) {
-    return await getDoc(doc(this.fs, 'users', uid))
-  }
-
   isLogged() {
     onAuthStateChanged(this.auth, (user) => {
-      this.logged$.next(!!user);
+      if (user) {
+        this.logged$.next(true);
+        this.guildName(user.uid)
+      }
       if (!this.router.getCurrentNavigation()) this.router.navigateByUrl('/dashboard')
     })
     return this.logged$;
+  }
+
+  guildName(uid: string): Promise<void>{
+    return getDoc(doc(this.fs, 'guilds', uid)).then(guild => {
+      console.log(guild)
+      // this.guildName$.next(guild[0].guildName)
+    })
   }
 
   logout() {
