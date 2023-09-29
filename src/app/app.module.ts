@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { bootstrapApplication, BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -17,6 +17,7 @@ import { RaidsModule } from './raids/raids.module';
 
 import { ProgressModule } from './progress/progress.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 const routes: Routes = [
   { path: '**', redirectTo: 'dashboard'},
@@ -41,7 +42,9 @@ const routes: Routes = [
     provideAuth(() => getAuth()),
     BrowserAnimationsModule,
   ],
-  providers: [AuthGuard],
-  bootstrap: [AppComponent]
+  providers: [AuthGuard,
+    {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {subscriptSizing: 'dynamic'}}
+  ],
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

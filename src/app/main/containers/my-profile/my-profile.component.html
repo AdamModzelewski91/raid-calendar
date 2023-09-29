@@ -1,5 +1,5 @@
-<div class="my-profile">
-  <h2>{{userName}}</h2>
+<div class="my-profile" *ngIf="currentUser$ | async as user">
+  <h2>{{user.nick}}</h2>
   <button routerLink="add-character">Add Character</button>
   <button routerLink="character-list">Character List</button>
   <button (click)="logout()">Logout</button>

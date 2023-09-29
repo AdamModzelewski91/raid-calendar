@@ -1,7 +1,5 @@
-import { Component } from '@angular/core';
-import { Auth } from '@angular/fire/auth';
-import { collection, collectionData, documentId, Firestore, where, query } from '@angular/fire/firestore';
-import { map, take } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/auth/services/auth.service';
 import { activeLinksMaster, activeLinksMember } from './active-links.config';
 
 @Component({
@@ -9,27 +7,18 @@ import { activeLinksMaster, activeLinksMember } from './active-links.config';
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.scss']
 })
-export class NavComponent {
+export class NavComponent implements OnInit{
   activeLinks = activeLinksMember;
 
-  constructor(private auth: Auth, private fs: Firestore) {
-    this.getUser();
-  }
+  currentUser$ =  this.authService.currentUser$.subscribe((val) => {
+    if (val?.guildMaster) {
+      this.activeLinks = activeLinksMaster;
+    }
+  })
 
-  getUser() {
-    collectionData(
-      query(
-        collection(this.fs, 'users'),
-        where(documentId(), "==", this.auth.currentUser?.uid),
-      )
-    ).pipe(
-      take(1), 
-      map(d => d[0]),
-    ).subscribe(val => {
-      console.log(val)
-      if (val['guildMaster'])
-        this.activeLinks = activeLinksMaster;
-    });
-  }
+  constructor(private authService: AuthService) { }
 
+  ngOnInit(): void {
+    this.authService.getCurrentUser();
+  }
 }

@@ -1,5 +1,10 @@
 <form [formGroup]="form" (ngSubmit)="login()">
   <input type="email" placeholder="Enter your email" formControlName="email">
+  <ng-container *ngIf="(loginControls.email.invalid && loginControls.email.touched) || loginControls.email.dirty">
+    <p class="text-danger" *ngIf="loginControls.email.hasError('required')">Email required!</p>
+    <p class="text-danger" *ngIf="loginControls.email.hasError('pattern') && loginControls.email.touched" >Wrong format!</p>
+  </ng-container>
   <input type="password" placeholder="Enter your password" formControlName="password">
-  <button type="submit">Login</button>
+  <p class="text-danger" *ngIf="emailAlreadyExist">Wrong email or password</p>
+  <button type="submit" [disabled]="!form.valid">Login</button>
 </form>

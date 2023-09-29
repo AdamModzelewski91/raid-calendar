@@ -1,7 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <input type="text" placeholder="Nick" formControlName="nick">
   <ng-container *ngIf="(registerFormControl.nick.invalid && registerFormControl.nick.touched) || registerFormControl.nick.dirty">
-    <p class="text-danger" *ngIf="registerFormControl.nick.hasError('required')">Nick is taken! Try other.</p>
+    <p class="text-danger" *ngIf="registerFormControl.nick.hasError('required')">Provide your nick.</p>
     <p class="text-danger" *ngIf="registerFormControl.nick.touched && registerFormControl.nick.hasError('minlength')">Nick is to short! At leat 3 chars.</p>
   </ng-container>
   <input type="email" placeholder="Email" formControlName="email">

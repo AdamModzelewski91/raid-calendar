@@ -12,7 +12,7 @@ export class MemberListService {
   getMembersList(): Observable<any>{
     return collectionData(query(
      collection(this.fs, 'users'),
-     where('guildId', '==', 'string'),
+     where('guildId', '==', 'yWHSxkecWaM8BvOlQAls'),
     ))
   }
 }

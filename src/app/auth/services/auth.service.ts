@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Auth, signInWithEmailAndPassword, onAuthStateChanged, createUserWithEmailAndPassword } from '@angular/fire/auth';
-import { addDoc, collection, collectionData, doc, Firestore, setDoc, updateDoc, where, query, getDoc } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, doc, Firestore, setDoc, updateDoc, where, query, getDoc, documentId } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, take } from 'rxjs';
+import { BehaviorSubject, map, Observable, take } from 'rxjs';
 import { RegisterUser } from '../components/register/register.component';
 
 
@@ -12,7 +12,7 @@ import { RegisterUser } from '../components/register/register.component';
 export class AuthService {
   logged$ = new BehaviorSubject<boolean>(false);
 
-  guildName$ = new BehaviorSubject<string>('');
+  currentUser$ = new BehaviorSubject<any>(null);
 
   constructor(
     private auth: Auth,
@@ -50,12 +50,12 @@ export class AuthService {
         });
       });
     }
-    
+
     this.login(email, password).then(() => {
-      this.guildName$.next(guildName)
-    }); 
+      // this.guildName$.next(guildName)
+    });
     return user
-  }  
+  }
 
   async createGuild(uid: string, guildName: string) : Promise<any> {
     return addDoc(collection(this.fs, 'guilds'), {
@@ -99,6 +99,20 @@ export class AuthService {
       console.log(guild)
       // this.guildName$.next(guild[0].guildName)
     })
+  }
+
+  getCurrentUser() {
+    collectionData(
+      query(
+        collection(this.fs, 'users'),
+        where(documentId(), "==", this.auth.currentUser?.uid),
+      )
+    ).pipe(
+      take(1),
+      map(d => d[0]),
+    ).subscribe(val => {
+      this.currentUser$.next(val);
+    });
   }
 
   logout() {

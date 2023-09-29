@@ -4,6 +4,8 @@ import { MemberListComponent } from "./containers/member-list/member-list.compon
 import { MemberTabelListComponent } from './components/member-tabel-list/member-tabel-list.component';
 import { MemberListService } from "./services/member-list.service";
 import { CommonModule } from "@angular/common";
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatTableModule} from '@angular/material/table';
 
 const routes: Routes = [
   { path: '', component: MemberListComponent },
@@ -17,6 +19,8 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
+    MatPaginatorModule,
+    MatTableModule
   ],
   providers: [
     MemberListService,

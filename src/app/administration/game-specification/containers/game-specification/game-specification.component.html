@@ -1,10 +1,36 @@
 <div>
   <h1>Add Character builder</h1>
-  <pre>{{formList | json}}</pre>
-  <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-    <div class="example-box" *ngFor="let movie of formList" cdkDrag>{{movie}}</div>
-  </div>
-  <app-new-field (newField)="getNewField($event)"></app-new-field>
-  <button type="button" (click)="saveBuilder()">Save</button>
+  <p>It's about creating fields for 'Add Character' menu. What information you would like to know about each character. From 'Selection' fields there ll be radio buttons to select only 1 option.</p>
+  <mat-card>
+    <mat-card-content cdkDropList class="list" (cdkDropListDropped)="drop($event)">
+      <div class="container" *ngFor="let movie of formList; index as i" cdkDrag>
+        <mat-form-field >
+          <mat-label>Drag me!</mat-label>
+          <input matInput type="text" [(ngModel)]="movie.fieldName" (ngModelChange)="onChange($event, i)">
+          <button matSuffix mat-icon-button aria-label="Clear" (click)="removeMovie(i)">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+        <div class="list-options">
+          <ng-container *ngFor="let option of movie.selectOptions; index as j; trackBy: trackByFn">
+            <mat-form-field>
+              <input matInput type="text" [(ngModel)]="movie.selectOptions[j]" name="{{j}}">
+              <button matSuffix mat-icon-button aria-label="Clear" (click)="removeOption(i, j)">
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+          </ng-container>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <br>
+  <mat-card>
+    <mat-card-content>
+      <app-new-field (newField)="getNewField($event)"></app-new-field>
+    </mat-card-content>
+  </mat-card>
+  <br>
+  <button mat-raised-button color="primary" type="submit" (click)="saveBuilder()">Save builder</button>
 </div>
 

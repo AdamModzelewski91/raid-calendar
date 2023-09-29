@@ -21,5 +21,16 @@ form {
     &:hover {
       background-color: #0275b3;
     }
+
+    &:disabled {
+      background-color: #0275b3;
+      cursor: inherit;
+    }
   }
 }
+
+.text-danger {
+  color: red;
+  font-size: small;
+};
+

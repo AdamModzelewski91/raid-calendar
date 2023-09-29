@@ -9,6 +9,8 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 export class MyProfileComponent {
   userName = 'test';
 
+  currentUser$ = this.authService.currentUser$
+
   constructor(private authService: AuthService){}
 
   logout() {

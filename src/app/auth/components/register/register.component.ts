@@ -19,8 +19,8 @@ export class RegisterComponent {
   form = this.fb.group({
     nick: ['', [Validators.required, Validators.minLength(3)]],
     email: ['', [
-      Validators.required, 
-      Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$"), 
+      Validators.required,
+      Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$"),
     ]],
     password: ['', [Validators.required, Validators.minLength(6)]],
     guildMaster: true,
@@ -46,14 +46,11 @@ export class RegisterComponent {
     if (!this.form.valid) return;
 
     this.authService.register(this.form.getRawValue())
-      .then((user)=> {
-        
-      })
       .catch(() => {
-      this.emailAlreadyExist = true;
+        this.emailAlreadyExist = true;
         const timer = setTimeout(()=> {
           this.emailAlreadyExist = false;
-          this.form.get('email')?.setValue('');
+          this.form.get('email')?.reset('');
           clearTimeout(timer);
         }, 3000);
       })

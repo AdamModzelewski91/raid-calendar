@@ -1,0 +1,21 @@
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+  padding: 4px 0 4px 10px;
+}
+
+.form-field {
+  flex-grow: 1;
+}
+
+mat-form-field.new-field  {
+  min-width: 100%;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
