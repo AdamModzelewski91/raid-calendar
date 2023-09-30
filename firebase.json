@@ -6,7 +6,13 @@
     {
       "target": "guild-raiding-app",
       "source": ".",
-      "frameworksBackend": {}
+      "frameworksBackend": {},
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
     }
   ]
 }
