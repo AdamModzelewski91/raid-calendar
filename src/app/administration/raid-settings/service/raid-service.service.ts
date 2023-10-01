@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {  Observable, map, tap, of } from 'rxjs';
+import {  Observable, map, tap, of, catchError } from 'rxjs';
 import { RaidSettings } from '../components/raid-form/raid-form.component';
 import { Firestore, addDoc, updateDoc, collection, collectionData, documentId, doc, collectionGroup, where, query, setDoc, getCountFromServer, AggregateField } from '@angular/fire/firestore';
 import { Auth } from '@angular/fire/auth';
@@ -13,25 +13,12 @@ export class RaidSettingsService {
   constructor(private fs: Firestore, private auth: Auth) { }
 
   getRaidSettings(): Observable<any> {
-    this.checkIfExists().then(res => {
-      if(!res.valueOf()) {
-        this.postRaidSettings({raids: []});
-      }
-    });
-
     return collectionData(
       query(
         collection(this.fs, 'raid-settings'),
         where(documentId(), "==", this.auth.currentUser?.uid),
       )
-    ).pipe(map(d => d[0]));
-  }
-
-  async checkIfExists(): Promise<boolean> {
-    const snap = await getCountFromServer(query(
-        collection(this.fs, 'raid-settings'), where(documentId(), '==', this.auth.currentUser?.uid)
-      ))
-    return !!snap.data().count;
+    ).pipe(map(d => d[0] ?? []));
   }
 
   postRaidSettings(raid: any) {

@@ -1,7 +1,20 @@
-<form>
-  <input type="text" placeholder="Character name">
-  <input type="text" placeholder="Level">
-  <input type="text" placeholder="Gear score">
-  <input type="text" placeholder="Role">
-  <input type="text" placeholder="Specyfication">
+<form [formGroup]="form" (ngSubmit)="AddCharacter()" *ngIf="(characterBuilder$ | async) as builder; else redirectTo">
+  <ng-container *ngFor="let build of builder.characterBuild">
+    <mat-form-field *ngIf="build.selectOptions.length === 0">
+      <mat-label>{{build.fieldName}}</mat-label>
+      <input matInput [formControlName]="build.formControlName">
+    </mat-form-field>
+    <ng-container *ngIf="build.selectOptions.length > 0">
+      <h2>{{build.fieldName}}</h2>
+      <mat-button-toggle-group [formControlName]="build.formControlName">
+        <mat-button-toggle *ngFor="let select of build.selectOptions" [value]="select">{{select}}</mat-button-toggle>
+      </mat-button-toggle-group>
+    </ng-container>
+  </ng-container>
+
+  <button class="btn--save" mat-raised-button color="primary" type="submit">Add Character</button>
 </form>
+
+<ng-template #redirectTo>
+  <h2>Visit <span class="link" (click)="visitMenu()">Game specification</span> to adjust fields and save builder</h2>
+</ng-template>

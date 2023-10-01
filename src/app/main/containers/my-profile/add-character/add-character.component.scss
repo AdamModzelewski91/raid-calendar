@@ -1,4 +1,23 @@
-:host{
-  width: 100%;
-  margin: 0 20px;
+form {
+  display: flex;
+  flex-direction: column;
+  padding: 0 20px;
+  margin-top: 20px;
+
+  h2 {
+    text-align: center;
+  }
+
+  mat-button-toggle {
+    width: 100%;
+  }
+
+  .btn--save {
+    margin-top: 20px;
+  }
+}
+
+.link {
+  cursor: pointer;
+  color: #009df1;
 }
