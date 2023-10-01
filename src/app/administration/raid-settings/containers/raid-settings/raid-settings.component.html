@@ -1,3 +1,2 @@
-<pre>{{raids$ | async | json}}</pre>
 <app-raid-form *ngIf="raids$ | async as raids" [raid]="raids" (savedRaid)="postRaidSettings($event)"></app-raid-form>
 

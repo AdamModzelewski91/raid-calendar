@@ -1,5 +1,8 @@
 <app-nav *ngIf="isLogged$ | async"></app-nav>
-<router-outlet></router-outlet>
+<div class="wrapper">
+  <h1 *ngIf="(currentUser$ | async) as user">{{ user.guildName }}</h1>
+  <router-outlet></router-outlet>
+</div>
 <div *ngIf="!(isLogged$ | async)" class="my-profile">
   <h1>Guild Raiding App</h1>
   <div class="buttons">

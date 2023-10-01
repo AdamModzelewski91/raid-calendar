@@ -30,12 +30,11 @@ export class NewFieldComponent {
   constructor(private fb: FormBuilder){ }
 
   addControlName(val: NewField) {
-    const { fieldName, fieldDescription, selectOptions} = val;
+    const { fieldName, selectOptions} = val;
     const formControlName = fieldName.toLocaleLowerCase().trim().split(' ').join('');
 
     return {
       fieldName,
-      fieldDescription,
       selectOptions,
       formControlName,
     }

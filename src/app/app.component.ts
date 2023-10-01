@@ -8,6 +8,7 @@ import { AuthService } from './auth/services/auth.service';
 })
 export class AppComponent {
   isLogged$ = this.auth.isLogged();
+  currentUser$ = this.auth.currentUser$
 
   constructor(
     private auth: AuthService,

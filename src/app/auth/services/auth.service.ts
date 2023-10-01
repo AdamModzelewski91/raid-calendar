@@ -87,18 +87,10 @@ export class AuthService {
     onAuthStateChanged(this.auth, (user) => {
       if (user) {
         this.logged$.next(true);
-        this.guildName(user.uid)
       }
       if (!this.router.getCurrentNavigation()) this.router.navigateByUrl('/dashboard')
     })
     return this.logged$;
-  }
-
-  guildName(uid: string): Promise<void>{
-    return getDoc(doc(this.fs, 'guilds', uid)).then(guild => {
-      console.log(guild)
-      // this.guildName$.next(guild[0].guildName)
-    })
   }
 
   getCurrentUser() {
