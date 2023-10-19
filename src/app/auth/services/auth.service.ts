@@ -17,7 +17,7 @@ export class AuthService {
   constructor(
     private auth: Auth,
     private router: Router,
-    private fs: Firestore
+    private fs: Firestore,
   ) {}
 
   async login(email: string, password: string): Promise<any> {
@@ -108,7 +108,10 @@ export class AuthService {
   }
 
   logout() {
-    this.auth.signOut();
+    this.auth.signOut().then(()=> {
+      this.logged$.next(false);
+      this.logged$.complete();
+    });
     this.router.navigateByUrl('/login');
   }
 }

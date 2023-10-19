@@ -58,7 +58,9 @@ export class NewFieldComponent {
   }
 
   changeOption(event: any){
-    this.fieldDescription = event.value === 'normal' ? true : false
+    this.fieldDescription = event.value === 'normal' ? true : false;
+    this.clearFormArray();
+
   }
 
   clearFormArray() {
